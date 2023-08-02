@@ -12,7 +12,7 @@ pipeline {
                 bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
         }
-        stage('Code-Analysis') {
+        /*stage('Code-Analysis') {
             steps {
                 bat "mvn sonar:sonar -Dsonar.language=java"
             }
@@ -22,6 +22,18 @@ pipeline {
                         waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-credentials' 
                     }
                     
+                }
+            }
+        }*/
+        stage('Code-Analysis') {
+            steps {
+                withSonarQubeEnv(credentialsId: 'sonarqube-credentials') {
+                    bat "mvn sonar:sonar -Dsonar.language=java" 
+                }
+            }
+            post {
+                success {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-credentials'                     
                 }
             }
         }
