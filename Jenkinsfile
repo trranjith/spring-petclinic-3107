@@ -27,14 +27,9 @@ pipeline {
         }*/
         stage('Code-Analysis') {
             steps {
-                withSonarQubeEnv(credentialsId: 'sonarqube-credentials') {
+                //withSonarQubeEnv(credentialsId: 'sonarqube-credentials') {
                     bat "mvn sonar:sonar -Dsonar.language=java" 
-                }
-            }
-            post {
-                success {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-credentials'                     
-                }
+                //}
             }
         }
         stage('Deploy-to-Tomcat') {
