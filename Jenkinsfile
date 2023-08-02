@@ -18,7 +18,10 @@ pipeline {
             }
             post {
                 success {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-credentials' 
+                    withSonarQubeEnv(credentialsId: 'sonarqube-credentials') {
+                        waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-credentials' 
+                    }
+                    
                 }
             }
         }
