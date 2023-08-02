@@ -16,6 +16,11 @@ pipeline {
             steps {
                 bat "mvn sonar:sonar -Dsonar.language=java"
             }
+            post {
+                success {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-credentials' 
+                }
+            }
         }
         stage('Deploy-to-Tomcat') {
             steps {
